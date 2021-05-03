@@ -15,6 +15,6 @@ protected:
 	int MAXGEN = 1000; //объем текста на выходе
 public:
 	Generatortxt(vector<string> words, int n_pref ,int max_gen);
-	Generatortxt(map<prefix, vector<string>> Gener, int pref,int m_gen);
+	Generatortxt(map<prefix, vector<string>> Gener, int m_gen);
 	string Generationtxt();
 };

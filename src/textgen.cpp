@@ -1,4 +1,5 @@
 #include "textgen.h"
+#include <time.h>
 Generatortxt::Generatortxt(vector<string> words, const int n_pref, const int max_gen)
 {
 	int i = 0;
@@ -26,9 +27,9 @@ Generatortxt::Generatortxt(vector<string> words, const int n_pref, const int max
 		i++;
 	}
 }
-Generatortxt::Generatortxt(map<prefix, vector<string>> Gener, int pref, int m_gen)
+Generatortxt::Generatortxt(map<prefix, vector<string>> Gener, int m_gen)
 {
-	NPREF = pref;
+	NPREF = statetab.begin()->first.size();
 	MAXGEN = m_gen;
 	statetab = Gener;
 }
