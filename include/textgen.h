@@ -1,20 +1,20 @@
-#pragma once
-#include<iostream>
-#include<string>
-#include<map>
-#include<deque>
-#include<vector>
+#include <deque>
+#include <map>
+#include <string>
+#include <vector>
+
 using namespace std;
 
-class Generatortxt
+class GenText
 {
-protected:
-	typedef deque<string> prefix;          // очередь префиксов
-	map<prefix, vector<string> > statetab; // префикс-суффиксы
-	int NPREF ; // количество слов в префиксе
-	int MAXGEN = 1000; //объем текста на выходе
+private:
+    typedef deque<string> prefix;
+    map<prefix, vector<string>> statelab;
+    int NPREF = 2;
+    int MAXGEN = 1000;
+
 public:
-	Generatortxt(vector<string> words, int n_pref ,int max_gen);
-	Generatortxt(map<prefix, vector<string>> Gener, int m_gen);
-	string Generationtxt();
+    GenText(vector<string> all_of_words, int pref_counter, int gen_counter);
+    GenText(map<prefix, vector<string>> Gener, int m_gen);
+    string Generationtxt();
 };

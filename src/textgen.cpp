@@ -1,65 +1,60 @@
 #include "textgen.h"
 #include <time.h>
-Generatortxt::Generatortxt(vector<string> words, const int n_pref, const int max_gen)
+
+GenText::GenText(vector<string> all_of_words, int pref_counter, int gen_counter)
 {
-	int i = 0;
-	int j = 0;
-	NPREF = n_pref;
-	MAXGEN = max_gen;
-	string str = "";
-	while (i < words.size() + 1 - n_pref)
-	{
-		prefix pref;
-		for (j = 0; j < n_pref; j++)
-		{
-			str = words[i + j];
-			pref.push_back(str);
-			str = "";
-		}
-		if ((words.size() - n_pref - i) == 0)
-		{
-			statetab[pref].push_back("last of all preffix");
-		}
-		else
-		{
-			statetab[pref].push_back(words[i + n_pref]);
-		}
-		i++;
-	}
+    NPREF = pref_counter;
+    MAXGEN = gen_counter;
+
+    int i = 0;
+    while (i < all_of_words.size() - NPREF + 1)
+    {
+        prefix pref;
+        for (int j = 0; j < NPREF; j++)
+            pref.push_back(all_of_words.at(i + j));
+        if (i == all_of_words.size() - NPREF)
+            statelab[pref].push_back("_last_of_all_prefix_");
+        else
+            statelab[pref].push_back(all_of_words.at(i + NPREF));
+        i++;
+    }
 }
-Generatortxt::Generatortxt(map<prefix, vector<string>> Gener, int m_gen)
+
+GenText::GenText(map<prefix, vector<string>> Gener, int m_gen)
 {
-	NPREF = statetab.begin()->first.size();
-	MAXGEN = m_gen;
-	statetab = Gener;
+    statelab = Gener;
+    NPREF = statelab.begin()->first.size();
+    MAXGEN = m_gen;
 }
-string Generatortxt::Generationtxt()
+
+string GenText::Generationtxt()
 {
-	srand(time(0));
-	string vihod;
-	deque<string> words;
+    srand(time(NULL));
+    string vihod;
+    deque<string> words;
 
+    auto it = statelab.begin();
+    advance(it, rand() % statelab.size());
+    for (int i = 0; i < NPREF; i++)
+        words.push_back(it->first.at(i));
 
-	for (int i = 0; i < NPREF; i++)
-		words.push_back(statetab.begin()->first[i]);
+    while (vihod.size() < MAXGEN)
+    {
+        prefix pref;
+        for (int i = 0; i < NPREF; i++)
+            pref.push_back(words.at(i));
+        int random = rand() % statelab.find(pref)->second.size();
+        if (statelab.find(pref)->second.at(random) == "_last_of_all_prefix_")
+        {
+            for (int i = 0; i < NPREF; i++)
+                vihod += words.at(i) + ' ';
+            break;
+        }
+        words.push_back(statelab.find(pref)->second.at(random));
 
-	while (vihod.size() < MAXGEN)
-	{
-		prefix prefF;
-		for (int i = 0; i < NPREF; i++)
-			prefF.push_back(words[i]);
-		int random = rand() % statetab.find(prefF)->second.size();
-		if (statetab.find(prefF)->second[random] == "last of all preffix")
-		{
-			for (int i = 0; i < NPREF; i++)
-				vihod += words[i] + ' ';
-			break;
-		}
-		words.push_back(statetab.find(prefF)->second[random]);
+        vihod += words.at(0) + ' ';
+        words.pop_front();
+    }
 
-		vihod += words[0] + ' ';
-
-		words.pop_front();
-	}
-	return vihod;
+    return vihod;
 }
