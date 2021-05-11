@@ -19,36 +19,43 @@ TEST(task2, test1)
 
 TEST(task3, test1)
 {
+    /////////////////////////////////////////////////////////////////////////////////
     map<deque<string>, vector<string>> mma;
-    mma[{"everything", "throw"}].push_back("rain");
-    mma[{"throw", "rain"}].push_back("houston");
-    mma[{"rain", "houston"}].push_back("last of all preffix");
+    mma[{"Enjoy", "the"}].push_back("ride");
+    mma[{"the", "ride"}].push_back("last of all preffix");
     Generatortxt G_object(mma, 100);
-    ASSERT_STREQ("everything throw rain houston ", G_object.Generationtxt().c_str());
+    string vihod = G_object.Generationtxt();
+    if (vihod[0] == 'E')
+        ASSERT_STREQ("Enjoy the ride ", vihod.c_str());
+    else
+        ASSERT_EQ('t', vihod[0]);
 }
 
 TEST(task4, test1)
 {
     map<deque<string>, vector<string>> mma;
-    mma[{"everything", "throw"}].push_back("rain");
-    mma[{"everything", "throw"}].push_back("move");
-    mma[{"throw", "rain"}].push_back("last of all preffix");
-    mma[{"throw", "move"}].push_back("last of all preffix");
+    mma[{"Enjoy", "the"}].push_back("ride");
+    mma[{"Enjoy", "the"}].push_back("moment");
+    mma[{"the", "ride"}].push_back("last of all preffix");
+    mma[{"the", "moment"}].push_back("last of all preffix");
+
     Generatortxt G_object(mma, 100);
-    string output = G_object.Generationtxt();
-    if (output[output[output.length() - 2]] != 'e')
-        ASSERT_STREQ("everything throw rain ", output.c_str());
+    string vihod = G_object.Generationtxt();
+    if (vihod[0] == 't')
+        ASSERT_EQ('t', vihod[0]);
+    else if (vihod[vihod[vihod.length() - 2]] == 'e')
+        ASSERT_STREQ("Enjoy the ride ", vihod.c_str());
     else
-        ASSERT_STREQ("everything throw move ", output.c_str());
+        ASSERT_STREQ("Enjoy the moment ", vihod.c_str());
 }
 
 TEST(task5, test1)
 {
-    vector<string> words{ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "10)" };
-    Generatortxt G_object(words, 4, 100);
-    string line = G_object.Generationtxt();
-    if (line[line.length() - 2] == ')')
-        ASSERT_EQ(')', line[line.length() - 2]);
+    vector<string> words{ "If", "you", "want", "to", "be", "somebody,", "somebody", "really", "special,", "be", "yourself." };
+    Generatortxt G_object(words, 2, 100);
+    string output = G_object.Generationtxt();
+    if (output[output.length() - 2] == '.')
+        ASSERT_EQ('.', output[output.length() - 2]);
     else
-        ASSERT_LE(100, line.size());
+        ASSERT_LE(100, output.size());
 }
